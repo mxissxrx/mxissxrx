@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'HelveticaNeueRegular';
+    src: url('./fonts/HelveticaNeue\ Regular.ttf') format('truetype');
+}
+
+.my-text{
+    font-family: 'HelveticaNeueRegular';
+    font-weight: 900;
+    letter-spacing: 5px;
+}

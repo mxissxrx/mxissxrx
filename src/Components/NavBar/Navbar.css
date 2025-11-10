@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'ITCLegacySansBook';
+  src: url('./fonts/ITCLegacySansBook-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'HelveticaNeueLight';
+    src: url('./fonts/HelveticaNeue.ttf') format('truetype');
+}
+.navbar{
+    padding: 2%;
+}
+
+.navbar ul li a {
+  font-family: 'HelveticaNeueLight';
+  letter-spacing: 2.6px;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
