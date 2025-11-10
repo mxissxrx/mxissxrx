@@ -5,7 +5,6 @@ import "./Pinterest.css";
 const Pinterest = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Reverse the data so latest IDs appear first
   const reversedData = [...data].sort((a, b) => b.id - a.id);
 
   const ITEMS_PER_PAGE = 10;
@@ -19,14 +18,12 @@ const Pinterest = () => {
         PINTEREST POSTS
       </h2>
 
-      {/* POSTS */}
       <div className="flex flex-col gap-12 max-w-6xl mx-auto">
         {currentPosts.map((post) => (
           <div
             key={post.id}
             className="flex flex-col md:flex-row items-center md:items-start gap-8 rounded-2xl shadow-md overflow-hidden bg-[#fdfdfd] p-6"
           >
-            {/* Left: Main Pinterest Image */}
             <div className="w-full md:w-2/5 flex flex-col items-center">
               <img
                 src={post.mainImage}
@@ -39,7 +36,6 @@ const Pinterest = () => {
               </p>
             </div>
 
-            {/* Right: Product Items */}
             <div className="w-full md:w-3/5 grid grid-cols-2 sm:grid-cols-3 gap-4">
               {post.items.map((item, index) => (
                 <div
@@ -84,7 +80,6 @@ const Pinterest = () => {
         ))}
       </div>
 
-      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-10">
           <button

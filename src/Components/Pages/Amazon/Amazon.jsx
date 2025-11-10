@@ -15,15 +15,12 @@ const Amazon = () => {
     { code: "US", name: "United States 🇺🇸" },
   ];
 
-  // ✅ Reverse data so the highest ID (latest) appears first
   const reversedData = [...data].sort((a, b) => b.id - a.id);
 
   const categories = ["All", ...new Set(reversedData.map((item) => item.category))];
 
-  // ✅ Collect all unique styles (flatten arrays)
   const styles = ["All", ...new Set(reversedData.flatMap((item) => item.style))];
 
-  // ✅ Filter by category + style
   const filteredData = reversedData.filter((item) => {
     const categoryMatch =
       selectedCategory === "All" || item.category === selectedCategory;
@@ -34,7 +31,6 @@ const Amazon = () => {
     return categoryMatch && styleMatch;
   });
 
-  // ✅ Pagination
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const visibleItems = filteredData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -43,7 +39,6 @@ const Amazon = () => {
   const handleNextPage = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
-  // ✅ Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, selectedStyle]);
@@ -52,9 +47,7 @@ const Amazon = () => {
     <section className="bg-white py-16 px-4">
       <h2 className="my-text text-3xl font-semibold text-center mb-10">AMAZON FINDS</h2>
 
-      {/* Top bar (categories + region) */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center max-w-6xl mx-auto mb-10">
-        {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-3 mb-6 lg:mb-0">
           {categories.map((category) => (
             <button
@@ -71,7 +64,6 @@ const Amazon = () => {
           ))}
         </div>
 
-        {/* Region Dropdown */}
         <div className="flex justify-center lg:justify-end mt-4 lg:mt-0 lg:ml-auto">
           <select
             value={region}
@@ -87,9 +79,7 @@ const Amazon = () => {
         </div>
       </div>
 
-      {/* Layout (style filter + items grid) */}
       <div className="flex flex-col lg:flex-row max-w-6xl mx-auto gap-8">
-        {/* Sidebar */}
         <aside className="lg:w-1/5 w-full mb-8 lg:mb-0">
           <h3 className="text-lg font-semibold mb-3">Filter by Style</h3>
           <div
@@ -125,7 +115,6 @@ const Amazon = () => {
           </div>
         </aside>
 
-        {/* Image Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 flex-1">
           {visibleItems.map((item) => (
             <a
@@ -147,10 +136,9 @@ const Amazon = () => {
         </div>
       </div>
 
-      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-10">
-          {/* PREV */}
+
           <button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
@@ -163,7 +151,6 @@ const Amazon = () => {
             &lt;
           </button>
 
-          {/* PAGE NUMBERS */}
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
@@ -178,7 +165,6 @@ const Amazon = () => {
             </button>
           ))}
 
-          {/* NEXT */}
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './Components/NavBar/Navbar'
 import Logo from './Components/Logo/Logo'
 
-// Pages
 import Home from './Components/Pages/Home'
 import Pinterest from './Components/Pages/Pinterest/Pinterest'
 import Amazon from './Components/Pages/Amazon/Amazon'
@@ -23,19 +22,17 @@ const App = () => {
     setIsMenuOpen(false)
     setTimeout(() => {
       window.location.href = path
-    }, 250) // slightly longer delay to match slower animation
+    }, 250)
   }
 
   return (
     <Router>
       <div className="relative w-full min-h-screen">
-        {/* Header Section */}
         <div className="relative z-50">
           <Logo />
           <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
 
-        {/* Page Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pinterest" element={<Pinterest />} />
@@ -43,7 +40,6 @@ const App = () => {
           <Route path="/dhgate" element={<Dhgate />} />
         </Routes>
 
-        {/* Mobile Menu */}
         <div
           className={`fixed bottom-0 left-0 w-full bg-[#FBEAF2] z-40 transform transition-transform duration-500 ease-in-out
             ${isMenuOpen ? "translate-y-0" : "translate-y-full"} rounded-t-3xl top-28 lg:top-auto`}

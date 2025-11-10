@@ -3,7 +3,7 @@ import { data } from "../Dhgate/dhgateItems";
 import "./Dhgate.css";
 
 const Dhgate = () => {
-  // --- SETTINGS ---
+
   const itemsPerPage = 48;
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
@@ -11,7 +11,6 @@ const Dhgate = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // --- CURRENCY CONVERSION RATES ---
   const conversionRates = {
     CAD: 1,
     USD: 0.71,
@@ -24,11 +23,9 @@ const Dhgate = () => {
     EUR: "€",
   };
 
-  // --- FILTER OPTIONS ---
   const categories = ["All", ...new Set(data.map((item) => item.category))];
   const brands = ["All", ...new Set(data.map((item) => item.brand))];
 
-  // --- FILTER DATA ---
   const filteredData = data.filter((item) => {
   const categoryMatch =
     selectedCategory === "All" || item.category === selectedCategory;
@@ -40,7 +37,6 @@ const Dhgate = () => {
 });
 
 
-  // --- PAGINATION LOGIC ---
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = filteredData.slice(
@@ -48,7 +44,6 @@ const Dhgate = () => {
     startIndex + itemsPerPage
   );
 
-  // --- RESET PAGE WHEN FILTERS CHANGE ---
   const handleFilterChange = (type, value) => {
     if (type === "category") setSelectedCategory(value);
     if (type === "brand") setSelectedBrand(value);
@@ -62,23 +57,20 @@ const Dhgate = () => {
       </h2>
 
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-        {/* LEFT SIDEBAR: BRANDS */}
         <aside className="lg:w-1/5 w-full">
           <h3 className="text-lg font-semibold mb-4">Search</h3>
 
-  {/* SEARCH BAR */}
   <input
     type="text"
     placeholder="Search items..."
     value={searchTerm}
     onChange={(e) => {
       setSearchTerm(e.target.value);
-      setCurrentPage(1); // reset pagination when searching
+      setCurrentPage(1);
     }}
     className="w-full mb-6 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200"
   />
 
-  {/* BRANDS SECTION */}
   <h4 className="text-md font-semibold mb-2">Filter by Brand</h4>
   <div
     className="
@@ -113,11 +105,8 @@ const Dhgate = () => {
   </div>
         </aside>
 
-        {/* MAIN SECTION */}
         <div className="flex-1">
-          {/* CATEGORY + CURRENCY SELECT */}
           <div className="flex flex-col lg:flex-row justify-between items-center mb-8 gap-4">
-            {/* CATEGORY FILTER */}
             <div className="flex flex-wrap justify-center gap-3">
               {categories.map((category) => (
                 <button
@@ -134,7 +123,6 @@ const Dhgate = () => {
               ))}
             </div>
 
-            {/* CURRENCY SELECT */}
             <div>
               <select
                 value={currency}
@@ -148,12 +136,12 @@ const Dhgate = () => {
             </div>
           </div>
 
-          {/* GRID OF ITEMS */}
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             {currentItems.map((item) => (
               <a
                 key={item.id}
-                href={item.link} // only one link now
+                href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center group"
@@ -179,10 +167,8 @@ const Dhgate = () => {
             ))}
           </div>
 
-          {/* PAGINATION */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center gap-4 mt-10">
-              {/* PREV */}
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
@@ -195,7 +181,6 @@ const Dhgate = () => {
                 &lt;
               </button>
 
-              {/* PAGE NUMBERS */}
               {Array.from({ length: totalPages }, (_, i) => (
                 <button
                   key={i}
@@ -210,7 +195,6 @@ const Dhgate = () => {
                 </button>
               ))}
 
-              {/* NEXT */}
               <button
                 onClick={() =>
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
