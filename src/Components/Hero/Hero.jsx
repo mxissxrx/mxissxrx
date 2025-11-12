@@ -7,7 +7,7 @@ const Hero = () => {
   <img
   src="/pink-stripe2.png"
   alt="pink wallpaper"
-  className="absolute top-0 left-0 w-full h-screen object-cover hero-bg"
+  className="absolute top-0 left-0 w-full h-screen object-fit hero-bg"
 />
 
 </div>
