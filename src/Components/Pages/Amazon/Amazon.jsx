@@ -3,7 +3,7 @@ import { data } from "./amazonItems";
 import "./Amazon.css";
 
 const Amazon = () => {
-  const [region, setRegion] = useState("CA");
+  const [region, setRegion] = useState("US");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedStyle, setSelectedStyle] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
