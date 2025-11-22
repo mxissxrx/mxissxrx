@@ -7,7 +7,7 @@ import Home from './Components/Pages/Home'
 import Pinterest from './Components/Pages/Pinterest/Pinterest'
 import Amazon from './Components/Pages/Amazon/Amazon'
 import Dhgate from './Components/Pages/Dhgate/Dhgate'
-import Gift from './Components/Pages/Gift/Gift'
+//import Gift from './Components/Pages/Gift/Gift'
 
 
 const AppContent = () => {

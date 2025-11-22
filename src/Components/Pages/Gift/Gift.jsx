@@ -4,27 +4,45 @@ import "./Gift.css";
 
 const Gift = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const ITEMS_PER_PAGE = 28;
+  const ITEMS_PER_PAGE = 31;
 
-  const reversedData = [...data].sort((a, b) => b.id - a.id);
+  // Use data in natural order (id 1 → last)
+  const orderedData = [...data];
 
-const categories = ["All", ...new Set(
-  data.flatMap((item) => item.categories)
-)];
-  
-  const filteredData = reversedData.filter((item) => {
-  return selectedCategory === "All" || item.categories.includes(selectedCategory);});
+  // MAIN CATEGORIES
+  const categories = ["All", ...new Set(data.map((item) => item.category))];
 
+  // SUBCATEGORIES (no "All")
+  const subcategories =
+    selectedCategory === "All"
+      ? []
+      : [...new Set(
+          data
+            .filter((item) => item.category === selectedCategory)
+            .map((item) => item.subcategory)
+        )];
+
+  // FILTERING LOGIC
+  const filteredData = orderedData.filter((item) => {
+    const matchesCategory =
+      selectedCategory === "All" || item.category === selectedCategory;
+
+    const matchesSubcategory =
+      selectedSubcategory === "" ||
+      item.subcategory === selectedSubcategory;
+
+    return matchesCategory && matchesSubcategory;
+  });
 
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const visibleItems = filteredData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const handleNextPage = () =>
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const visibleItems = filteredData.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -32,58 +50,80 @@ const categories = ["All", ...new Set(
 
   useEffect(() => {
     setCurrentPage(1);
+    setSelectedSubcategory(""); // reset subcategory when switching main category
   }, [selectedCategory]);
 
   return (
     <section className="bg-white py-16 px-4">
-      <h2 className="my-text text-3xl font-semibold text-center mb-10">GIFT THAT!</h2>
+      <h2 className="my-text text-3xl font-semibold text-center mb-10">
+        GIFT THAT!
+      </h2>
 
-      <div className="flex flex-col items-center max-w-6xl mx-auto mb-10">
+      {/* MAIN CATEGORIES */}
+      <div className="flex flex-col items-center max-w-6xl mx-auto mb-6">
         <div className="flex flex-wrap justify-center gap-3">
-          {categories.map((category) => (
+          {categories.map((cat) => (
             <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                selectedCategory === category
+                selectedCategory === cat
                   ? "bg-[#FCE9FC] text-black"
                   : "bg-gray-100 text-black hover:bg-gray-200"
               }`}
             >
-              {category}
+              {cat}
             </button>
           ))}
         </div>
       </div>
 
+      {/* SUBCATEGORIES */}
+      {subcategories.length > 0 && (
+        <div className="flex flex-col items-center max-w-5xl mx-auto mb-10">
+          <div className="flex flex-wrap justify-center gap-3 mt-2">
+            {subcategories.map((sub) => (
+              <button
+                key={sub}
+                onClick={() => setSelectedSubcategory(sub)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                  selectedSubcategory === sub
+                    ? "bg-pink-100 text-black"
+                    : "bg-gray-100 text-black hover:bg-gray-200"
+                }`}
+              >
+                {sub}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ITEMS GRID */}
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
-  {visibleItems.map((item) => (
-    <a
-      key={item.id}
-      href={item.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block group"
-    >
-      <div className="relative w-full aspect-square bg-[#fafafa] rounded-2xl overflow-hidden shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
-        <img
+       <div className="columns-2 sm:columns-3 md:columns-4 gap-6 space-y-6">
+        {visibleItems.map((item) => (
+          <a
+          key={item.id}
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="break-inside-avoid group block"
+          >
+          <img
           src={item.src}
-          alt={item.alt}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-    </a>
-  ))}
-</div>
-
-
+          alt=""
+          className="w-full max-h-[420px] object-contain rounded-2xl shadow-sm transition-all duration-300 group-hover:shadow-lg"/>
+          </a>
+        ))}
+        </div>
       </div>
 
+      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-10">
           <button
-            onClick={handlePrevPage}
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
             className={`px-4 py-2 rounded-full ${
               currentPage === 1
@@ -109,7 +149,7 @@ const categories = ["All", ...new Set(
           ))}
 
           <button
-            onClick={handleNextPage}
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
             className={`px-4 py-2 rounded-full ${
               currentPage === totalPages
@@ -126,3 +166,5 @@ const categories = ["All", ...new Set(
 };
 
 export default Gift;
+
+
